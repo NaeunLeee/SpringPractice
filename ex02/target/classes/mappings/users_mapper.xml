@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- users_mapper.xml -->
+<mapper namespace="UserDAO">
+	<select id="getUserList" resultType="userVO" parameterType="userVO">
+		SELECT ID, PASSWORD, NAME, ROLE
+		FROM USERS
+		<where>
+			<if test="id != null and id != '' ">
+				ID LIKE '%' || #{id} || '%'
+			</if>
+			<if test="name != null and name != '' ">
+				AND NAME LIKE '%' || #{name} || '%'
+			</if>
+		</where>
+	</select>
+	<select id="getUser" parameterType="userVO" resultType="userVO">
+		SELECT ID, PASSWORD, NAME, ROLE
+		FROM USERS
+		WHERE ID = #{id}
+	</select>
+	<select id="getUserListMap" parameterType="userVO" resultType="map">
+		SELECT ID        "id", 
+		       PASSWORD  "password", 
+		       NAME      "name", 
+		       ROLE      "role"
+		FROM USERS
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insertUser" parameterType="userVO">
+		INSERT INTO USERS (ID, PASSWORD, NAME, ROLE)
+		VALUES (#{id}
+			   ,#{password}
+			   ,#{name}
+			   ,#{role})
+	</insert>
+
+	<!-- 수정 -->
+	<update id="updateUser" parameterType="userVO">
+		UPDATE USERS 
+		SET	PASSWORD = #{password}
+		   ,NAME = #{name}
+		   ,ROLE = #{role}
+		WHERE ID = #{id}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteUser" parameterType="userVO">
+		DELETE FROM USERS
+		WHERE ID = #{id}
+	</delete>
+
+</mapper>
